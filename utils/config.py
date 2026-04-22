@@ -9,9 +9,9 @@ class Config:
     IMPLICIT_WAIT = 10 # in seconds - global wait for all element lookups
     EXPLICIT_WAIT_TIMEOUT  = 15 # seconds - max wait for specific condiction
 
-    # Test credentials (Sauce Demo provides these publicly)
+    # Test credentials 
     VALID_USERNAME = "standard_user"
-    VALID_PASSWORD = "[PASSWORD]e"
+    VALID_PASSWORD = "secret_sauce"
     LOCKED_USERNAME = "locked_out_user" # To Test Scenario when user is locked out due to variours reasons.
 
 class StatingCongif(Config):

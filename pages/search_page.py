@@ -1,60 +1,51 @@
 """
-SearchPage (Inventory Page): Represents the products listing page
-that appears after successful login on Sauce Demo.
+SearchPage (InventoryPage): Encapsulates all elements and actions on the Inventory page.
+Handles: product listing, sorting, and product detail navigation
 """
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from pages.base_page import BasePage
 
 class SearchPage(BasePage):
     # ===== LOCATORS =====
-    PRODUCT_TITLE = (By.CLASS_NAME, "inventory_item_name")
-    SORT_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
-    PRODUCT_PRICES = (By.CLASS_NAME, "inventory_item_price")
     INVENTORY_LIST = (By.CLASS_NAME, "inventory_list")
-    # Dynamic locator — we'll build XPath at runtime based on product name
-    # XPath: A query language for selecting nodes in an XML/HTML document
+    INVENTORY_ITEMS = (By.CLASS_NAME, "inventory_item")
+    ITEM_PRICES = (By.CLASS_NAME, "inventory_item_price")
+    SORT_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
+    PRODUCT_DETAIL_CONTAINER = (By.CLASS_NAME, "inventory_details_container")
+    BACK_TO_PRODUCTS_BUTTON = (By.ID, "back-to-products")
 
+    def is_inventory_page_loaded(self):
+        """Verify inventory page is loaded"""
+        return self.is_displayed(self.INVENTORY_LIST)
 
-def get_all_product_names(self):
-    """Returns a list of all visible product names."""
-    elements = self.driver.find_elements(*self.PRODUCT_TITLE)
-    # The * operator UNPACKS the tuple: (By.CLASS_NAME, "inventory_item_name")
-    # becomes two separate arguments: By.CLASS_NAME, "inventory_item_name"
-    return [element.text for element in elements]
-    # List comprehension: A concise way to create a list from a loop
+    def get_product_count(self):
+        """Return the number of products displayed"""
+        products = self.find_all(self.INVENTORY_ITEMS)
+        return len(products)
 
+    def sort_products_by(self, sort_option):
+        """Select a sort option from the dropdown"""
+        dropdown = self.find(self.SORT_DROPDOWN)
+        select = Select(dropdown)
+        select.select_by_visible_text(sort_option)
 
-def get_all_product_prices(self):
-    """Returns a list of all product prices as floats."""
-    elements = self.driver.find_elements(*self.PRODUCT_PRICES)
-    return [float(el.text.replace("$", "")) for el in elements]
+    def get_all_prices(self):
+        """Return all product prices as a list of floats"""
+        price_texts = self.get_all_texts(self.ITEM_PRICES)
+        # Remove "$" and convert to float e.g. "$29.99" -> 29.99
+        return [float(price.replace("$", "")) for price in price_texts]
 
+    def click_product(self, product_name):
+        """Click on a specific product by its name"""
+        product_locator = (By.LINK_TEXT, product_name)
+        self.click(product_locator)
 
-def sort_products(self, sort_option):
-    """
-    Selects a sort option from the dropdown.
-    Select class: Selenium's built-in class for handling HTML <select> dropdowns.
-    """
-    from selenium.webdriver.support.ui import Select
-    dropdown = self.find_element(self.SORT_DROPDOWN)
-    select = Select(dropdown)
-    select.select_by_visible_text(sort_option)
+    def is_product_detail_page_loaded(self):
+        """Verify product detail page is loaded"""
+        return self.is_displayed(self.PRODUCT_DETAIL_CONTAINER)
 
+    def is_back_button_displayed(self):
+        """Verify back to products button is visible"""
+        return self.is_displayed(self.BACK_TO_PRODUCTS_BUTTON)
 
-def click_product_by_name(self, product_name):
-    """Clicks on a product using a dynamic XPath locator."""
-    dynamic_locator = (By.XPATH, f"//div[text()='{product_name}']")
-    # f-string: Python's string formatting — inserts the product_name variable
-    self.click_element(dynamic_locator)
-
-
-def is_inventory_page_displayed(self):
-    """Verifies the inventory/products page is loaded."""
-    return self.is_element_displayed(self.INVENTORY_LIST)
-
-
-def get_product_count(self):
-    """Returns the number of products displayed."""
-    elements = self.driver.find_elements(*self.PRODUCT_TITLE)
-    return len(elements)

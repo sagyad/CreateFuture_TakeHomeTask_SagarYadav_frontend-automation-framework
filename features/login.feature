@@ -12,7 +12,7 @@ Feature: Login Functionality
   # Scenario Outline: A template that runs the same scenario with DIFFERENT data
   # Examples table: Provides the data sets — each row is a separate test run
   # <placeholder>: Variables that get replaced with values from the Examples table
-  @wip
+
   Scenario Outline: Login with different credentials
     Given I am on the login page
     When I enter username "<username>" and password "<password>"
@@ -24,7 +24,7 @@ Feature: Login Functionality
       | standard_user   | secret_sauce | inventory page  |
       | locked_out_user | secret_sauce | error message   |
 
-  @wip
+
   Scenario: Login with empty credentials
     Given I am on the login page
     When I enter username "" and password ""
