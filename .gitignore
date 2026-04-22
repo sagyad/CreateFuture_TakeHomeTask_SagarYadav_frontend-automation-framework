@@ -1,0 +1,27 @@
+# Virtual environment
+.venv/
+venv/
+
+# IDE files (PyCharm/JetBrains)
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Reports (generated on each run)
+reports/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Behave output files
+pretty.output
+*.output
+
+# Byte-compiled files
+*.egg-info/
+dist/
+build/
