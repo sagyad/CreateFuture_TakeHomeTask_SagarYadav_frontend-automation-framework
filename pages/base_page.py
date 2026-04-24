@@ -36,16 +36,17 @@ class BasePage:
     def click(self, locator):
         """Wait for element to be clickable, highlight, then click"""
         element = self.find_clickable(locator)
+        highlight(self.driver,element)
         element.click()
 
     def enter_text(self, locator, text):
         """Wait for element, highlight, clear it, then type text"""
         element = self.find(locator)
+        highlight(self.driver, element)
         element.clear()
         element.send_keys(text)
 
     def get_text(self, locator):
-        """Wait for element, highlight it, and return its text"""
         return self.find(locator).text
 
     def get_all_texts(self, locator):
@@ -54,9 +55,9 @@ class BasePage:
         return [element.text for element in elements]
 
     def is_displayed(self, locator):
-        """Check if element is displayed (highlighted if found)"""
         try:
-            return self.find(locator).is_displayed()
+            element = self.find(locator)
+            return element.is_displayed()
         except:
             return False
 
